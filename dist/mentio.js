@@ -585,7 +585,7 @@ angular.module('mentio', [])
                             var triggerCharSet = [];
                             triggerCharSet.push(scope.triggerChar);
                             mentioUtil.popUnderMention(scope.parentMentio.context(),
-                                triggerCharSet, element, scope.requireLeadingSpace,
+                                triggerCharSet, element, container, scope.requireLeadingSpace,
                                 scope.displayAbove());
                         }
                     }
@@ -619,7 +619,7 @@ angular.module('mentio', [])
                         var triggerCharSet = [];
                         triggerCharSet.push(scope.triggerChar);
                         mentioUtil.popUnderMention(scope.parentMentio.context(),
-                            triggerCharSet, element, scope.requireLeadingSpace,
+                            triggerCharSet, element, container, scope.requireLeadingSpace,
                             scope.displayAbove());
                     }
                 });
@@ -716,7 +716,7 @@ angular.module('mentio')
     .factory('mentioUtil', ["$window", "$location", "$anchorScroll", "$timeout", function ($window, $location, $anchorScroll, $timeout) {
 
         // public
-        function popUnderMention (ctx, triggerCharSet, selectionEl, requireLeadingSpace, above) {
+        function popUnderMention (ctx, triggerCharSet, selectionEl, selectionContainer, requireLeadingSpace, above) {
             var coordinates;
             var mentionInfo = getTriggerInfo(ctx, triggerCharSet, requireLeadingSpace, false);
 
@@ -731,12 +731,14 @@ angular.module('mentio')
 
                 // Move the button into place.
                 var topCoordinate = coordinates.top;
+                var containerScollTop = selectionContainer[0].scrollTop || 0;
+
                 if (above) {
                     var textFontSize = _getStyle(getDocument(ctx).activeElement, 'font-size').replace('px', '');
                     topCoordinate -= selectionEl[0].scrollHeight + textFontSize;
                 }
                 selectionEl.css({
-                    top: topCoordinate + 'px',
+                    top: (topCoordinate - containerScollTop) + 'px',
                     left: coordinates.left + 'px',
                     position: 'absolute',
                     zIndex: 100,
@@ -772,10 +774,9 @@ angular.module('mentio')
 
         function updatePositionTop(selectionEl, container, newHeight, oldHeight) {
             var currentTop = selectionEl[0].offsetTop;
-            var containerScollTop = container[0].scrollTop || 0;
 
             selectionEl.css({
-                top: (currentTop - newHeight + oldHeight - containerScollTop) + 'px'
+                top: (currentTop - newHeight + oldHeight) + 'px'
             });
         }
 
