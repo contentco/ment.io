@@ -63,10 +63,9 @@ angular.module('mentio')
 
         function updatePositionTop(selectionEl, container, newHeight, oldHeight) {
             var currentTop = selectionEl[0].offsetTop;
-            var containerScollTop = container[0].scrollTop || 0;
 
             selectionEl.css({
-                top: (currentTop - newHeight + oldHeight - containerScollTop) + 'px'
+                top: (currentTop - newHeight + oldHeight) + 'px'
             });
         }
 
