@@ -585,7 +585,7 @@ angular.module('mentio', [])
                             var triggerCharSet = [];
                             triggerCharSet.push(scope.triggerChar);
                             mentioUtil.popUnderMention(scope.parentMentio.context(),
-                                triggerCharSet, element, scope.requireLeadingSpace,
+                                triggerCharSet, element, container, scope.requireLeadingSpace,
                                 scope.displayAbove());
                         }
                     }
@@ -619,7 +619,7 @@ angular.module('mentio', [])
                         var triggerCharSet = [];
                         triggerCharSet.push(scope.triggerChar);
                         mentioUtil.popUnderMention(scope.parentMentio.context(),
-                            triggerCharSet, element, scope.requireLeadingSpace,
+                            triggerCharSet, element, container, scope.requireLeadingSpace,
                             scope.displayAbove());
                     }
                 });
