@@ -17,7 +17,8 @@ angular.module('mentio', [])
                 selectNotFound: '=mentioSelectNotFound',
                 trimTerm: '=mentioTrimTerm',
                 ngModel: '=',
-                menuPosition: '=mentioMenuPosition'
+                menuPosition: '=mentioMenuPosition',
+                container: '@mentioContainer'
             },
             controller: function($scope, $timeout, $attrs) {
 
@@ -267,6 +268,9 @@ angular.module('mentio', [])
                     if (scope.menuPosition) {
                         html = html + ' mentio-menu-position="\'' + scope.menuPosition + '\'"';
                     }
+                    if (scope.container) {
+                        html = html + ' mentio-container="\'' + scope.container + '\'"';
+                    }
                     html = html + ' mentio-trigger-char="\'' + scope.defaultTriggerChar + '\'"' +
                         ' mentio-parent-scope="parentScope"' +
                         '/>';
@@ -467,7 +471,8 @@ angular.module('mentio', [])
                 triggerChar: '=mentioTriggerChar',
                 forElem: '=mentioFor',
                 parentScope: '=mentioParentScope',
-                menuPosition: '=mentioMenuPosition'
+                menuPosition: '=mentioMenuPosition',
+                container: '=mentioContainer'
             },
             templateUrl: function(tElement, tAttrs) {
                 return tAttrs.mentioTemplateUrl !== undefined ? tAttrs.mentioTemplateUrl : 'mentio-menu.tpl.html';
@@ -549,6 +554,11 @@ angular.module('mentio', [])
                 $document[0].body.appendChild(element[0]);
                 scope.menuElement = element; // for testing
 
+                var container = $(scope.container);
+                if (!container.length) {
+                    container = $(window);
+                }
+
                 if (scope.parentScope) {
                     scope.parentScope.addMenu(scope);
                 } else {
@@ -586,7 +596,7 @@ angular.module('mentio', [])
                         return element[0].scrollHeight;
                     }, function(newValue, oldValue) {
                         if(Math.abs(newValue - oldValue) > 2) {
-                            mentioUtil.updatePositionTop(element, newValue, oldValue);
+                            mentioUtil.updatePositionTop(element, container, newValue, oldValue);
                         }
                     });
                 }

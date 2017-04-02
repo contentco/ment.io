@@ -1,4 +1,5 @@
 'use strict';
+/* jshint latedef:nofunc */
 
 angular.module('mentio')
     .factory('mentioUtil', function ($window, $location, $anchorScroll, $timeout) {
@@ -58,10 +59,12 @@ angular.module('mentio')
             }
         }
 
-        function updatePositionTop(selectionEl, newHeight, oldHeight) {
+        function updatePositionTop(selectionEl, container, newHeight, oldHeight) {
             var currentTop = selectionEl[0].offsetTop;
+            var containerScollTop = container[0].scrollTop || 0;
+
             selectionEl.css({
-                top: (currentTop - newHeight + oldHeight) + 'px'
+                top: (currentTop - newHeight + oldHeight - containerScollTop) + 'px'
             });
         }
 
